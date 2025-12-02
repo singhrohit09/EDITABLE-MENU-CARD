@@ -1,0 +1,231 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Punjabi Darbar Menu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fff8e6, #ffb347); /* orange + white */
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #ffffffaa;
+      backdrop-filter: blur(5px);
+    }
+    h1 { margin: 0; font-size: 32px; }
+
+    #languageSelector {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+    #languageSelector button {
+      padding: 8px 14px;
+      border: none;
+      background: #222;
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .category {
+      background: #ffffffdd;
+      padding: 20px;
+      margin: 20px;
+      border-radius: 15px;
+    }
+    .category h2 { margin-top: 0; }
+
+    .item {
+      display: flex;
+      align-items: center;
+      margin: 12px 0;
+      gap: 15px;
+    }
+    .item img {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+    .item-name { font-size: 18px; font-weight: bold; }
+    .price { color: #444; }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+    }
+    #adminBtn {
+      padding: 10px 20px;
+      background: #000;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>PUNJABI DARBAR</h1>
+
+  <div id="languageSelector">
+    <button onclick="switchLang('en')">English</button>
+    <button onclick="switchLang('hi')">Hindi</button>
+    <button onclick="switchLang('mr')">Marathi</button>
+    <button onclick="switchLang('pa')">Punjabi</button>
+    <button onclick="switchLang('gu')">Gujarati</button>
+    <button onclick="switchLang('bn')">Bengali</button>
+    <button onclick="switchLang('ta')">Tamil</button>
+    <button onclick="switchLang('te')">Telugu</button>
+    <button onclick="switchLang('kn')">Kannada</button>
+    <button onclick="switchLang('ml')">Malayalam</button>
+  </div>
+</header>
+
+<div id="menuContainer"></div>
+
+<footer>
+  <button id="adminBtn" onclick="openAdmin()">Admin Menu Editor</button>
+</footer>
+
+<script>
+const MENU = {
+  "Starters": [
+    { name:{en:"Paneer Tikka",hi:"पनीर टिक्का",mr:"पनीर टिक्का",pa:"ਪਨੀਰ ਟਿੱਕਾ",gu:"પનીર ટિક્કા",bn:"পনির টিক্কা",ta:"பனீர் திக்கா",te:"పనీర్ టిక్కా",kn:"ಪನೀರ್ ಟಿಕ್ಕಾ",ml:"പനീർ ടിക്ക"}, price:"₹180", img:"https://i.pinimg.com/1200x/ac/4b/94/ac4b9463bc4a1d69ad4f589fef95be5c.jpg"},
+    { name:{en:"Veg Manchurian",hi:"वेग मंचूरियन",mr:"व्हेज मंचूरियन",pa:"ਵੇਜ ਮੰਚੂਰੀਅਨ",gu:"વેજ મંજૂરિયન",bn:"ভেজ মাঞ্চুরিয়ান",ta:"வெஜ் மஞ்சூரியன்",te:"వెజ్ మాంచూరಿಯನ್",kn:"ವೆಜ್ ಮಂಚೂರಿಯನ್",ml:"വെജ് മാഞ്ചുരിയൻ"}, price:"₹150", img:"https://i.pinimg.com/736x/07/ff/9b/07ff9bb159910f91c901355136950ea4.jpg"},
+    { name:{en:"Hara Bhara Kebab",hi:"हरा भरा कबाब",mr:"हरा भरा कबाब",pa:"ਹਰਾ ਭਰਾ ਕਬਾਬ",gu:"હરા ભરા કબાબ",bn:"হারা ভারা কাবাব",ta:"ஹரா பரா கெபாப்",te:"హరా భరా కబాబ్",kn:"ಹರಾ ಭರಾ ಕಬಾಬ್",ml:"ഹരാ ഭരാ കബാബ്"}, price:"₹160", img:"https://i.pinimg.com/736x/35/36/f6/3536f61030c3bbcb9f10efc9337fcacc.jpg"},
+    { name:{en:"Chicken 65",hi:"चिकन 65",mr:"चिकन 65",pa:"ਚਿਕਨ 65",gu:"ચિકન 65",bn:"চিকেন ৬৫",ta:"சிக்கன் 65",te:"చికెన్ 65",kn:"ಚಿಕನ್ 65",ml:"ചിക്കൻ 65"}, price:"₹190", img:"https://i.pinimg.com/1200x/6b/ee/97/6bee973baaeab4c4da15ef28eaf06241.jpg"},
+  ],
+
+  "Main Course": [
+    { name:{en:"Butter Chicken",hi:"बटर चिकन",mr:"बटर चिकन",pa:"ਬਟਰ ਚਿਕਨ",gu:"બટર ચિકન",bn:"বাটার চিকেন",ta:"பட்டர் சிக்கன்",te:"బట్టర్ చికెన్",kn:"ಬಟರ್ ಚಿಕನ್",ml:"ബട്ടർ ചിക്കൻ"}, price:"₹260", img:"https://i.pinimg.com/736x/15/62/e6/1562e6d4d35b973f04dc4c2db535d7f3.jpg"},
+    { name:{en:"Paneer Butter Masala",hi:"पनीर बटर मसाला",mr:"पनीर बटर मसाला",pa:"ਪਨੀਰ ਬਟਰ ਮਸਾਲਾ",gu:"પનીર બટર મસાલા",bn:"পনির বাটার মাসালা",ta:"பனீர் பட்டர் மசாலா",te:"పనీర్ బట్టర్ మసాలా",kn:"ಪನೀರ್ ಬಟರ್ ಮಸಾಲಾ",ml:"പനീർ ബട്ടർ മസാല"}, price:"₹220", img:"https://i.pinimg.com/1200x/9a/65/90/9a65906e09943ce49c876dbe7509af86.jpg"},
+    { name:{en:"Chicken Handi",hi:"चिकन हांडी",mr:"चिकन हांडी",pa:"ਚਿਕਨ ਹਨਡੀ",gu:"ચિકન હાંડી",bn:"চিকেন হান্ডি",ta:"சிக்கன் ஹாண்டி",te:"చికెన్ హాండీ",kn:"ಚಿಕನ್ ಹಾಂಡಿ",ml:"ചിക്കൻ ഹാൻഡി"}, price:"₹280", img:"https://i.pinimg.com/736x/2f/8c/c1/2f8cc193f941000190f480cfe441051c.jpg"},
+    { name:{en:"Veg Kolhapuri",hi:"वेग कोल्हापुरी",mr:"वेग कोल्हापुरी",pa:"ਵੈਜ ਕੋਲਹਾਪੁਰੀ",gu:"વેજ કોલ્હાપુરી",bn:"ভেজ কলহাপুরি",ta:"வெஜ் கோல்ஹாபுரி",te:"వెజ్ కోల్హాపురి",kn:"ವೆಜ್ ಕೊಲ್ಹಾಪುರಿ",ml:"വെജ് കോള്ഹാപുരി"}, price:"₹200", img:"https://i.pinimg.com/1200x/4e/b8/82/4eb88239b20c0d5e4017d99e99a3d995.jpg"},
+  ],
+
+  "Breads": [
+    { name:{en:"Butter Naan",hi:"बटर नान",mr:"बटर नान",pa:"ਬਟਰ ਨਾਨ",gu:"બટર નાન",bn:"বাটার নান",ta:"பட்டர் நான்",te:"బట్టర్ నాన్",kn:"ಬಟರ್ ನಾನ್",ml:"ബട്ടർ നാന്"}, price:"₹40", img:"https://i.pinimg.com/1200x/c3/98/b1/c398b1367a78955ae6f7edd80107cf18.jpg"},
+    { name:{en:"Garlic Naan",hi:"गार्लिक नान",mr:"गार्लिक नान",pa:"ਗਾਰਲਿਕ ਨਾਨ",gu:"ગાર્લિક નાન",bn:"গার্লিক নান",ta:"கார்லிக் நான்",te:"గార్లిక్ నాన్",kn:"ಗಾರ್ಲಿಕ್ ನಾನ್",ml:"ഗാർലിക് നാൻ"}, price:"₹55", img:"https://i.pinimg.com/1200x/1c/a6/c1/1ca6c100275644142a7e9efb099a59da.jpg"},
+    { name:{en:"Tandoori Roti",hi:"तंदूरी रोटी",mr:"तंदुरी रोटी",pa:"ਤੰਦੂਰੀ ਰੋਟੀ",gu:"તંદૂરી રોટલી",bn:"তন্দুরি রুটি",ta:"தந்தூரி ரொட்டி",te:"తందూరి రోటీ",kn:"ತಂದೂರಿ ರೋಟಿ",ml:"തണ്ടൂരി റോട്ടി"}, price:"₹20", img:"https://i.pinimg.com/736x/cb/52/f5/cb52f5a32e824835132b859f5dde520a.jpg"},
+  ],
+
+  "Rice": [
+    { name:{en:"Veg Biryani",hi:"वेग बिरयानी",mr:"व्हेज बिर्याणी",pa:"ਵੇਜ ਬਿਰਿਆਨੀ",gu:"વેજ બ્રિયાની",bn:"ভেজ বিরিয়ানি",ta:"வெஜ் பிரியாணி",te:"వెజ్ బిర్యానీ",kn:"ವೆಜ್ ಬಿರಿಯಾನಿ",ml:"വെജ് ബിരിയാണി"}, price:"₹180", img:"https://i.pinimg.com/736x/b6/0c/a5/b60ca58bc5c72d11a9679898d9deb006.jpg"},
+    { name:{en:"Chicken Biryani",hi:"चिकन बिरयानी",mr:"चिकन बिर्याणी",pa:"ਚਿਕਨ ਬਿਰਿਆਨੀ",gu:"ચિકન બ્રિયાની",bn:"চিকেন বিরিয়ানি",ta:"சிக்கன் பிரியாணி",te:"చికెన్ బిర్యానీ",kn:"ಚಿಕನ್ ಬಿರಿಯಾನಿ",ml:"ചിക്കൻ ബിരിയാണി"}, price:"₹220", img:"https://i.pinimg.com/1200x/6e/2b/f1/6e2bf12ad32bd46f2afcea57080b3ab4.jpg"},
+  ]
+};
+
+let currentLang = "en";
+
+function switchLang(lang) {
+  currentLang = lang;
+  renderMenu();
+}
+
+function renderMenu() {
+  const container = document.getElementById("menuContainer");
+  container.innerHTML = '';
+
+  for (let category in MENU) {
+    const div = document.createElement('div');
+    div.className = 'category';
+
+    div.innerHTML = `<h2>${category}</h2>`;
+
+    MENU[category].forEach(item => {
+      div.innerHTML += `
+        <div class='item'>
+          <img src='${item.img}' />
+          <div>
+            <div class='item-name'>${item.name[currentLang]}</div>
+            <div class='price'>${item.price}</div>
+          </div>
+        </div>`;
+    });
+
+    container.appendChild(div);
+  }
+}
+renderMenu();
+
+function openAdmin() {
+  let pass = prompt("Enter Admin Password:");
+  if (pass === "1234") alert("Admin Panel Coming Soon (Will Add Editor Here)");
+  else alert("Incorrect Password");
+}
+</script>
+
+<!-- Admin Editor Panel -->
+<div id="adminPanel" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000099; backdrop-filter:blur(4px); padding-top:60px;">
+  <div style="width:340px; margin:auto; background:#fff; padding:20px; border-radius:12px;">
+    <h2 style="margin-top:0; text-align:center;">Admin Menu Editor</h2>
+
+    <label>Category:</label>
+    <select id="adminCategory" style="width:100%; padding:8px; margin-bottom:10px;"></select>
+
+    <label>Dish Name (English):</label>
+    <input id="dishNameEn" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+    <label>Price:</label>
+    <input id="dishPrice" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+    <label>Image URL:</label>
+    <input id="dishImg" style="width:100%; padding:8px; margin-bottom:10px;" />
+
+    <button onclick="addDish()" style="width:100%; padding:10px; background:black; color:white; border:none; border-radius:8px; margin-bottom:10px;">Add Dish</button>
+    <button onclick="closeAdmin()" style="width:100%; padding:10px; background:#777; color:white; border:none; border-radius:8px;">Close</button>
+  </div>
+</div>
+
+<script>
+function openAdmin() {
+  let pass = prompt("Enter Admin Password:");
+  if (pass === "1234") {
+    loadCategories();
+    document.getElementById('adminPanel').style.display = 'block';
+  } else alert("Incorrect Password");
+}
+
+function closeAdmin() {
+  document.getElementById('adminPanel').style.display = 'none';
+}
+
+function loadCategories() {
+  let select = document.getElementById('adminCategory');
+  select.innerHTML = '';
+  for (let c in MENU) select.innerHTML += `<option>${c}</option>`;
+}
+
+function addDish() {
+  let category = document.getElementById('adminCategory').value;
+  let en = document.getElementById('dishNameEn').value;
+  let price = document.getElementById('dishPrice').value;
+  let img = document.getElementById('dishImg').value;
+
+  if (!en || !price || !img) { alert("Please fill all fields"); return; }
+
+  MENU[category].push({
+    name: { en: en, hi: en, mr: en, pa: en, gu: en, bn: en, ta: en, te: en, kn: en, ml: en },
+    price: price,
+    img: img
+  });
+
+  renderMenu();
+  alert("Dish Added Successfully!");
+}
+</script>
+
+</body>
+</html>
